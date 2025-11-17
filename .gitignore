@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+.venv/
+
+# SQLite DB
+trackforge.db
+
+# IDE/editor settings
+.vscode/
+*.swp
