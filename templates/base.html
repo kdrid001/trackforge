@@ -1,32 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>TrackForge</title>
 
-        <!-- tailwind css via CDN for rapid styling -->
-        <script src="https://cdn.tailwindcss.com"></script>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TrackForge</title>
 
-        <!-- HTMX for dynamic UI interactions (future use) -->
-        <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <!-- tailwind css via CDN for rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-        <!-- Local stylesheet (optional tweaks)-->
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    </head>
+    <!-- HTMX for dynamic UI interactions (future use) -->
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 
-    <body class="min-h-screen bg-slate-50 text-slate-900">
-        <!-- Header -->
-        <header class="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-slate-200">
-            <div class="max-w-5xl mx-suto px-4 py-4 flex items-center justify-between">
-                <h1 class="text-2xl font-semibold">TrackForge</h1>
-                <nav class="text-sm text-slate-600">Today</nav>
-            </div>
-        </header>
+    <!-- Local stylesheet (optional tweaks)-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
 
-        <!-- Main content container (child templates render here) -->
-        <main class="max-w-5xl mx-auto px-4 py-6">
-            {%block content %}{% endblock %}
-        </main>
-    </body>
+<body class="min-h-screen bg-slate-50 text-slate-900">
+    <!-- Header -->
+    <header class="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-slate-200">
+        <div class="max-w-5xl mx-suto px-4 py-4 flex items-center justify-between">
+            <h1 class="text-2xl font-semibold">TrackForge</h1>
+            <nav class="flex space-x-4 text-sm text-slate-600">
+                <a href="/" class="hover:text-slate-900">Today</a>
+                <a href="/week" class="hover:text-slate-900">Week</a>
+                <a href="/month" class="hover:text-slate-900">Month</a>
+                <a href="/all" class="hover-text-slate-900">All</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content container (child templates render here) -->
+    <main class="max-w-5xl mx-auto px-4 py-6">
+        {%block content %}{% endblock %}
+    </main>
+</body>
+
 </html>

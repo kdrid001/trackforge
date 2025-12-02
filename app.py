@@ -1,5 +1,5 @@
 from __future__ import annotations
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -73,6 +73,53 @@ def today_view():
     )
     return render_template('today.html', today=today, items=items)
 
+@app.get('/week')
+def week_view():
+    # Show all tasks due within the next 7 days.
+    today = date.today()
+    end_of_week = today + timedelta(days=7)
+
+    items = (
+        Task.query
+            .filter(Task.due_date >= today)
+            .filter(Task.due_date <= end_of_week)
+            .order_by(Task.due_date.asc(), Task.id.asc())
+            .all()
+    )
+    return render_template('week.html', today=today, start=today, end=end_of_week, items=items)
+
+@app.get('/month')
+def month_view():
+    # Show tasks due from the 1st to the last day of this month
+    today = date.today()
+    start = today.replace(day=1)
+
+    if today.month == 12:
+        end = today.replace(year=today.year + 1, month=1, day=1) - timedelta(days=1)
+    else:
+        end = today.replace(month=today.month + 1, day=1) - timedelta(days=1)
+
+    items = (
+        Task.query
+            .filter(Task.due_date >= start)
+            .filter(Task.due_date <= end)
+            .order_by(Task.due_date.asc(), Task.id.asc())
+            .all()
+    )
+
+    return render_template('month.html', start=start, end=end, items=items)
+
+@app.get('/all')
+def all_view():
+    # Show all tasks, sorted by due date then ID
+    items = (
+        Task.query
+            .order_by(Task.due_date.asc(), Task.id.asc())
+            .all()
+    )
+    return render_template('all.html', items=items)
+
+
 @app.post('/add')
 def add_task():
     """Create a new task from the form submission.
@@ -127,4 +174,4 @@ def delete_task(task_id: int):
 
 if __name__ == '__main__':
     # debug=True enables hot reload and nicer tracebacks during development
-    app.run(debug=True)
+    app.run(debug=True, port=5050)

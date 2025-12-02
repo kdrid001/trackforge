@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="text-xl font-semibold mb-4">
+    This Month ({{ start.strftime('%b %d') }} – {{ end.strftime('%b %d') }})
+</h2>
+
+{% if items %}
+<ul class="space-y-4">
+    {% for task in items %}
+    <li class="border border-slate-200 p-4 rounded-md shadow-sm">
+        <div class="flex justify-between items-center">
+            <div>
+                <p class="font-medium text-lg">{{ task.title }}</p>
+                <p class="text-sm text-slate-600">{{ task.source }}</p>
+                <p class="text-sm text-slate-500">Due: {{ task.due_date.strftime('%b %d') }}</p>
+                <p class="text-sm text-slate-500">Tags: {{ task.tags }}</p>
+            </div>
+            {% if task.status != 'done' %}
+            <form method="post" action="{{ url_for('mark_done', task_id=task.id) }}">
+                <button class="text-green-600 hover:underline text-sm">Mark done</button>
+            </form>
+            {% else %}
+            <p class="text-xs text-slate-400 italic">Complete</p>
+            {% endif %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="text-slate-500">No tasks scheduled for this month.</p>
+{% endif %}
+{% endblock %}
